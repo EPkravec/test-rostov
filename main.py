@@ -76,7 +76,7 @@ class MountPoint:
                         elif key == 'size':
                             self.size = value
 
-        return f'username = {self.point}, password = {self.size}'
+        return f'point = {self.point}, size = {self.size}'
 
 
 a = Workload(cloud='aws', username='user1', password='12346576', ip='198.123.24.1', point='c:\\sd\\sddse',
