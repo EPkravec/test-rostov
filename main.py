@@ -1,8 +1,7 @@
 class Workload:
 
-    def __init__(self, name, cloud, username, password, ip, aws_access_key_id=None, aws_secret_access_key=None,
-                 domen='us-east-1', credentals_box=None):
-        self.name = name
+    def __init__(self, cloud, username, password, ip, aws_access_key_id=None, aws_secret_access_key=None,
+                 credentals_box=None, domen='us-east-1'):
         self.cloud = cloud
         self.aws_access_key_id = aws_access_key_id
         self.aws_secret_access_key = aws_secret_access_key
@@ -13,54 +12,52 @@ class Workload:
         self.credentals_box = credentals_box
 
     def creat_box(self):
-        self.credentals_box = dict.fromkeys(
-            [self.cloud], [dict.fromkeys(['aws_access_key_id'], self.aws_access_key_id),
-                           dict.fromkeys(['ws_secret_access_key'], self.aws_secret_access_key),
-                           dict.fromkeys(['username'], self.username_aws),
-                           dict.fromkeys(['password'], self.password_aws),
-                           dict.fromkeys(['domen'], self.domen),
-                           dict.fromkeys(['ip'], self.ip)]
-        )
-        return f'{self.credentals_box}'
+        if not self.credentals_box:
+            self.credentals_box = dict.fromkeys(
+                [self.cloud], [dict.fromkeys(['aws_access_key_id'], self.aws_access_key_id),
+                               dict.fromkeys(['ws_secret_access_key'], self.aws_secret_access_key),
+                               dict.fromkeys(['username'], self.username_aws),
+                               dict.fromkeys(['password'], self.password_aws),
+                               dict.fromkeys(['domen'], self.domen),
+                               dict.fromkeys(['ip'], self.ip)]
+            )
 
-    def __str__(self):
-        return f'Данные по подключению к {self.name}: \n {self.credentals_box}'
+            data_box = self.credentals_box
+            return data_box
+        else:
+            data_box = self.credentals_box
+            return data_box
+
 
 
 class Credentials:
 
-    def __int__(self, workload):
-        self.workload = workload().creat_box()
+    def __init__(self, workload):
+        self.workload = workload
+        self.username = None
+        self.password = None
+        self.domen = None
 
-    def balala(self):
-        data = self.workload
-        for items in data:
+    def check_upd(self):
+        for items in self.workload:
             if items == 'aws':
-                for values in data['aws']:
+                for values in self.workload['aws']:
                     for key, value in values.items():
-                        if key == 'aws_access_key_id':
-                            pass
-                        elif key == 'aws_secret_access_key':
-                            pass
-                        elif key == 'ip':
-                            self.ip = value
-                        elif key == 'username':
+                        if key == 'username':
                             self.username = value
                         elif key == 'password':
                             self.password = value
                         elif key == 'domen':
                             self.domen = value
-
-    def __str__(self):
-        return f'username - {self.username}'
+        return f'username = {self.username}, password = {self.password}, domen = {self.domen}'
 
 
-a = Workload(name='awscloud', cloud='aws', username='user1', password='12346576', ip='198.123.24.1')
-b = a.creat_box()
-# print(a)
-print(b)
-g = Credentials(workload=a)
+a = Workload(cloud='aws', username='user1', password='12346576', ip='198.123.24.1').creat_box()
+g = Workload(cloud='aws', username='user1', password='12346576', ip='198.123.24.1')
+g = g.creat_box()
 print(g)
+b = Credentials(workload=a).check_upd()
+print(b)
 
 
 # class MountPoint:
