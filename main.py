@@ -41,6 +41,7 @@ class Credentials:
         self.username = None
         self.password = None
         self.domen = None
+        self.ip = None
 
     def check_upd(self):
         for items in self.workload:
@@ -51,9 +52,11 @@ class Credentials:
                             self.username = value
                         elif key == 'password':
                             self.password = value
+                        elif key == 'ip':
+                            self.ip = value
                         elif key == 'domen':
                             self.domen = value
-        return f'username = {self.username}, password = {self.password}, domen = {self.domen}'
+        return f'username = {self.username}, password = {self.password}, domen = {self.domen}, ip = {self.ip}'
 
 
 class MountPoint:
@@ -84,22 +87,7 @@ print(b)
 g = MountPoint(workload=a).check_ps()
 print(g)
 
-# class MountPoint:
-#
-#     def __int__(self):
-#         self.name_point_mount = 'c:\ '
-#         self.total_size_volume = int()
-#
-#
-# class Source:
-#
-#     def __init__(self):
-#         self.credentials = None
-#         self.workload = None
-#
-#     def cheсk(self):
-#         if self.workload.ip is None or self.credentials.username is None or self.credentials.password is None:
-#             print('отсутсвуют необходимые данные')
+
 #
 #
 # class MigrationTarget:
