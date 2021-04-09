@@ -1,3 +1,7 @@
+import json
+import time as t
+
+
 class Workload:
 
     def __init__(self, cloud, username, password, ip, point, size, aws_access_key_id=None, aws_secret_access_key=None,
@@ -92,35 +96,62 @@ class Source:
         self.check = credentials
 
     def check_upi(self):
-        for i in self.check:
-            if i != None:
-                return True
-            else:
-                print('Error: absent username/password/ip')
-
-
-class MigratoinTarget:
-
-    def __init__(self, mountPoint):
-        self.cloud = mountPoint
-
-    def check_i(self):
-        if self.cloud != ['aws'] and self.cloud != ['azure'] and self.cloud != ['vsphere'] and self.cloud != ['vcloud']:
-            print('Error: connecting to the wrong cloud')
+        if None in self.check:
+            return False
         else:
             return True
 
 
-# class Migration:
+class MigratoinTarget:
+
+    def __init__(self, mountpoint):
+        self.cloud = mountpoint
+
+    def check_i(self):
+        if self.cloud != ['aws'] and self.cloud != ['azure'] and self.cloud != ['vsphere'] and self.cloud != ['vcloud']:
+            return False
+        else:
+            return True
 
 
-a = Workload(cloud='aws', username='user1', password='12346576', ip='198.123.24.1', point='c:\\sd\\sddse',
-             size='512').creat_box()
+class Migration:
 
-b = Credentials(workload=a).check_upd()
+    def __init__(self, workload, mountpoint, sourse_check_upi, migratointarget_chek_i):
+        self.json = workload
+        self.point = str(mountpoint)
+        self.sourse_check_upi = sourse_check_upi
+        self.migratointarget_chek_i = migratointarget_chek_i
 
-g_1 = MountPoint(workload=a).check_ps()[0]
+    def run(self):
+        if self.sourse_check_upi:
+            if self.migratointarget_chek_i:
+                if self.point[2:5] == 'c:\\':
 
-h = Source(credentials=b).check_upi()
+                    self.json = json.dumps(self.json)
+                    file = open('data.json', 'w')
+                    file.write(self.json)
 
-e = MigratoinTarget(mountPoint=g_1).check_i()
+                    for i in range(-1, 101, 25):
+                        i += 1
+                        print(f'loading data .....{i}%')
+                        t.sleep(0.2)
+                        if i == 100:
+                            return print('loading is complete'),
+
+                else:
+                    return print('Error: incorrect boot volume specified')
+            else:
+                return print('Error: connecting to the wrong cloud')
+        else:
+            return print('Error: absent username/password/ip')
+
+
+data_load = Workload(cloud='aws', username='User1', password='12346587', ip='198.123.24.1', point='c:\\sd\\sddse',
+                     size='512').creat_box()
+data_list_upd = Credentials(workload=data_load).check_upd()
+check_cpz = MountPoint(workload=data_load).check_ps()[0]
+check_point = MountPoint(workload=data_load).check_ps()[1]
+check_none_upi = Source(credentials=data_list_upd).check_upi()
+check_good_clod = MigratoinTarget(mountpoint=check_cpz).check_i()
+ruun = Migration(workload=data_load, mountpoint=check_point, sourse_check_upi=check_none_upi,
+                 migratointarget_chek_i=check_good_clod).run()
